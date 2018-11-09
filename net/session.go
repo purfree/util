@@ -171,6 +171,21 @@ func (p *Session) start() {
 func (p *Session) read() {
 	for {
 		dl := p.parseDataLen()
+		data := make([]byte, dl)
+
+		buf := bytes.Buffer{}
+		for {
+			if int64(buf.Len()) >= int64(dl) {
+				break
+			}
+		}
+
+		//buf := make([]byte, 1024)
+		//n, err := p.reader.Read(buf)
+		//if err != nil {
+		//	panic(err)
+		//}
+		//fmt.Println(string(buf[:n]))
 
 		//buf := make([]byte, 1024)
 		//n, err := p.reader.Read(buf)
