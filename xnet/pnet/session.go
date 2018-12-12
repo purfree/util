@@ -16,7 +16,6 @@ type rwChan struct {
 }
 
 type Session struct {
-	//s *tcpServer
 	c net.Conn
 	r *bufio.Reader
 	w *bufio.Writer
@@ -37,7 +36,6 @@ func (p *Session) start(c net.Conn, ctx context.Context, cfg tcpConfig) {
 	c.SetReadDeadline(time.Now().Add(time.Second * time.Duration(cfg.ReadDeadline)))
 	c.SetWriteDeadline(time.Now().Add(time.Second * time.Duration(cfg.WriteDeadline)))
 
-	//p.s = s
 	p.r = bufio.NewReader(c)
 	p.w = bufio.NewWriter(c)
 
@@ -56,14 +54,6 @@ func (p *Session) start(c net.Conn, ctx context.Context, cfg tcpConfig) {
 func (p *Session) run(ctx, ctx2 context.Context) {
 	go p.read(ctx, ctx2)
 	go p.write(ctx, ctx2)
-}
-
-func (p *Session) pingLoop() {
-
-}
-
-func (p *Session) pongLoop() {
-
 }
 
 func (p *Session) read(ctx, ctx2 context.Context) {
@@ -136,6 +126,5 @@ func (p *Session) Send(data []byte) error {
 
 func (p *Session) Close() error {
 	p.cancel()
-	//p.s = nil
 	return p.c.Close()
 }
